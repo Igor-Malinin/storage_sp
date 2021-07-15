@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public class Box {
 
+
     public Box(BoxPosition position, int maxCapacity) {
         this.maxCapacity = maxCapacity;
         this.items = new HashSet<>();

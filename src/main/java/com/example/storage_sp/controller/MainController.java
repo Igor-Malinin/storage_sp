@@ -1,21 +1,15 @@
 package com.example.storage_sp.controller;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Set;
 
 import com.example.storage_sp.applications.StorageInterface;
 import com.example.storage_sp.applications.StorageInterfaceImpl;
-import com.example.storage_sp.domain.Greeting;
 import com.example.storage_sp.domain.Item;
-import com.example.storage_sp.domain.Storage;
 import com.example.storage_sp.repository.StorageState;
 import com.example.storage_sp.repository.StorageStateImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("message")
@@ -26,14 +20,13 @@ public class MainController {
     StorageState storageState;
     StorageInterface storage;
 
-    public void initTest() {
+    public MainController() {
         storageState = new StorageStateImpl();
         storage = new StorageInterfaceImpl(storageState);
         storage.createStorage(STORAGE_COLS, STORAGE_ROWS, BOX_CAPACITY);
         int MONITORS_COUNT = 25;
         int KEYBOARDS_COUNT = 20;
-        // добавляем несколько предметов по типу.
-        // место, на которое кладется предмет устанавливается автоматически (ближайшее свободное)
+
         for (int i = 0; i < KEYBOARDS_COUNT; i++) {
             storage.addItem("keyboard", "newKeyboard", "newDescription");
         }
@@ -41,17 +34,26 @@ public class MainController {
         for (int i = 0; i < MONITORS_COUNT; i++) {
             storage.addItem("monitor", "newMonitor", "newDescription");
         }
+        Set<String> monitorIds = storage.browseItemsByType("monitor").stream().map(Item::getId).collect(Collectors.toSet());
+        Set<String> keyboardsIds = storage.browseItemsByType("keyboard").stream().map(Item::getId).collect(Collectors.toSet());
     }
 
-    @GetMapping("/getAllBoxes")
-    public StorageStateImpl storageState(){
-        return (StorageStateImpl) storageState.getAllItems();
+    @GetMapping("/getAllItems")
+    Set<Item> getAll(){
+        return storageState.getAllItems();
     }
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    @PostMapping("/addItem")
+    boolean addItem(@RequestBody Item item){
+        return storage.addItem(item.getType(), item.getBrandN(), item.getDescription());
+    }
+    @GetMapping("/showItemsByType/{type}")
+    Set<Item> showItemsByType(@PathVariable String type){
+        return storage.browseItemsByType(type);
+    }
+    @GetMapping("/deleteItemsByID/{id}")
+    void takeItemFromStorage(@PathVariable Set<String> id){
+        storage.takeItems(id);
+    }
 
-    @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
-    }
+
 }
