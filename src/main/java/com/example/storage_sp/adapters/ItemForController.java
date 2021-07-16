@@ -1,4 +1,4 @@
-package com.example.storage_sp.classforcontroller;
+package com.example.storage_sp.adapters;
 
 import java.util.UUID;
 

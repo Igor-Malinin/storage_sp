@@ -1,5 +1,7 @@
 package com.example.storage_sp.domain;
 
+import com.example.storage_sp.adapters.ItemForController;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class Box {
     public Set<Item> getItems() {
         return items;
     }
+
 
     public BoxPosition getPosition() {
         return position;

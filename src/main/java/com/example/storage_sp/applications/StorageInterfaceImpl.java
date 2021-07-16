@@ -63,6 +63,7 @@ public class StorageInterfaceImpl implements StorageInterface {
 
     }
 
+
     private boolean checkExistentId(String itemId, Set<Item> allItems) {
         return allItems.stream().anyMatch(item -> item.getId().equals(itemId));
     }

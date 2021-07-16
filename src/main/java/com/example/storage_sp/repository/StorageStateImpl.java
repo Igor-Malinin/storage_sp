@@ -35,6 +35,7 @@ public class StorageStateImpl implements StorageState {
         storage.getBoxes().forEach(box -> box.getItems().removeIf(item -> itemsId.contains(item.getId())));
     }
 
+
     @Override
     public Set<Item> getAllItems() {
         return storage.getBoxes().stream().flatMap(box -> box.getItems().stream()).collect(Collectors.toSet());

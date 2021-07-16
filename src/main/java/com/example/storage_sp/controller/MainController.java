@@ -4,15 +4,11 @@ import java.util.Set;
 
 import com.example.storage_sp.applications.StorageInterface;
 import com.example.storage_sp.applications.StorageInterfaceImpl;
-import com.example.storage_sp.classforcontroller.ItemForController;
-import com.example.storage_sp.domain.Box;
+import com.example.storage_sp.adapters.ItemForController;
 import com.example.storage_sp.domain.Item;
 import com.example.storage_sp.repository.StorageState;
 import com.example.storage_sp.repository.StorageStateImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("message")
@@ -44,7 +40,7 @@ public class MainController {
         return storage.browseItemsByType(type);
     }
 
-    @GetMapping("/deleteItemsByID/{id}")
+    @PostMapping("/deleteItemsByID/{id}")
     void takeItemFromStorage(@PathVariable Set<String> id){
         storage.takeItems(id);
     }
