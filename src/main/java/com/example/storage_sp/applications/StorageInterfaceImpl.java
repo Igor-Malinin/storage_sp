@@ -33,7 +33,7 @@ public class StorageInterfaceImpl implements StorageInterface {
     public boolean addItem(String type, String brandN, String description) {
         Box box = findAnyFreeBox();
         box.getItems().add(new Item(type, brandN, description));
-        storageState.saveBoxes(Collections.singleton(box));
+        //storageState.saveBoxes(Collections.singleton(box));
         return true;
     }
 
@@ -71,7 +71,7 @@ public class StorageInterfaceImpl implements StorageInterface {
     private Box findAnyFreeBox() {
         Set<Box> freeBoxes = storageState.getFreeBoxes();
 
-        return freeBoxes.stream().findAny().orElseThrow(() -> new RuntimeException("no enough free place"));
+        return freeBoxes.stream().findAny().orElseThrow(() -> new RuntimeException("not enough free place"));
 
     }
 }
